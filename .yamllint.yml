@@ -1,0 +1,13 @@
+---
+
+# Format Ref: https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: default
+
+rules:
+    document-start:
+        level: error
+        present: true
+    line-length:
+        level: warning
+        max: 160

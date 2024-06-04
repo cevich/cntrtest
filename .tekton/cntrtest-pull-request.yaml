@@ -103,10 +103,6 @@ spec:
         description: Execute the build with network isolation
         name: hermetic
         type: string
-      - default: ""
-        description: Build dependencies to be prefetched by Cachi2
-        name: prefetch-input
-        type: string
       - default: "false"
         description: Java build
         name: java
@@ -187,31 +183,6 @@ spec:
             workspace: workspace
           - name: basic-auth
             workspace: git-auth
-      - name: prefetch-dependencies
-        params:
-          - name: input
-            value: $(params.prefetch-input)
-        runAfter:
-          - clone-repository
-        taskRef:
-          params:
-            - name: name
-              value: prefetch-dependencies
-            - name: bundle
-              value: quay.io/redhat-appstudio-tekton-catalog/task-prefetch-dependencies:0.1@sha256:0285e38b5b88552ef3d760db83e6a0ce91d8d308b48890885f51b13571a4e057
-            - name: kind
-              value: task
-          resolver: bundles
-        when:
-          - input: $(params.prefetch-input)
-            operator: notin
-            values:
-              - ""
-        workspaces:
-          - name: source
-            workspace: workspace
-          - name: git-basic-auth
-            workspace: git-auth
       - name: build-container
         params:
           - name: IMAGE
@@ -222,8 +193,6 @@ spec:
             value: $(params.path-context)
           - name: HERMETIC
             value: $(params.hermetic)
-          - name: PREFETCH_INPUT
-            value: $(params.prefetch-input)
           - name: IMAGE_EXPIRES_AFTER
             value: $(params.image-expires-after)
           - name: COMMIT_SHA
@@ -231,7 +200,7 @@ spec:
           - name: BUILD_ARGS_FILE
             value: $(params.build-args-file)
         runAfter:
-          - prefetch-dependencies
+          - clone-repository
         taskRef:
           params:
             - name: name

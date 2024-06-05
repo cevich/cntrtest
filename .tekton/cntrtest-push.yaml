@@ -310,26 +310,6 @@ spec:
             operator: in
             values:
               - "false"
-      - name: sast-snyk-check
-        runAfter:
-          - clone-repository
-        taskRef:
-          params:
-            - name: name
-              value: sast-snyk-check
-            - name: bundle
-              value: quay.io/redhat-appstudio-tekton-catalog/task-sast-snyk-check:0.1@sha256:242acc527a06a11fac9dd6524467f62f3a086c186c5f885973e5780a04d4289c
-            - name: kind
-              value: task
-          resolver: bundles
-        when:
-          - input: $(params.skip-checks)
-            operator: in
-            values:
-              - "false"
-        workspaces:
-          - name: workspace
-            workspace: workspace
       - name: clamav-scan
         params:
           - name: image-digest

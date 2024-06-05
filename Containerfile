@@ -1,2 +1,2 @@
 FROM registry.access.redhat.com/ubi8/ubi
-RUN uname -n > /root/build_hostname
+RUN date -u --iso-8601=seconds > /root/buildtime

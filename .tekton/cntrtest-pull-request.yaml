@@ -218,6 +218,18 @@ spec:
         workspaces:
           - name: source
             workspace: workspace
+      - name: extract-tag
+        runAfter:
+          - build-container
+        taskSpec:
+          results:
+            - name: buildtime
+              description: The buildtime recorded w/in the the container image.
+          steps:
+            - name: retrieve-contents
+              image: $(params.output-image)
+              script: |
+                cat /root/buildtime > $(results.buildtime.path)
       - name: build-source-image
         params:
           - name: BINARY_IMAGE

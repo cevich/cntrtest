@@ -340,8 +340,10 @@ spec:
         params:
           - name: IMAGE
             value: $(tasks.build-container.results.IMAGE_URL)
+          - name: ADDITIONAL_TAGS
+            value: [$(tasks.extract-tag.results.buildtime)]
         runAfter:
-          - build-container
+          - extract-tag
         taskRef:
           params:
             - name: name
